@@ -102,7 +102,7 @@ async function scoutTrends() {
       ? '\n\nAVOID these recent themes: ' + lastThemes.join(', ') + '. Find different angles.'
       : '';
 
-    const prompt = 'You are the SCOUT. Research top 10 Bitcoin/crypto trends from internet, X, social media. Focus on: influential people statements (politicians, bank CEOs, tech leaders, celebrities), price action, on-chain data, ETF flows, mining, regulation. Current BTC: $' + btcStr + avoidClause + '. Return JSON: [{"topic":"name","who":"person or N/A","statement":"what they said","impact":"why it matters"}]. Only JSON.';
+    const prompt = 'You are the SCOUT. Research top 10 Bitcoin/crypto trends from internet, X, social media. PRIORITY: Focus heavily on INDIAN market since India has the most Bitcoin holders globally. Include: Indian influencers, regulatory news from India (RBI, SEBI), Indian exchanges (WazirX, CoinDCX), Indian celebrities backing crypto, India-based institutional adoption, local Indian crypto communities, INR/BTC trading trends. Also cover: influential global statements, price action, on-chain data, ETF flows. Current BTC: $' + btcStr + avoidClause + '. Return JSON: [{"topic":"name","who":"person or N/A","statement":"what they said","impact":"why it matters"}]. Mix Indian and global topics (70% India-focused). Only JSON.';
 
     const response = await axios.post(
       'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' + geminiKey,
@@ -137,7 +137,7 @@ async function architectWork(trends) {
     const btcPrice = await getBTCPrice();
     const btcStr = btcPrice ? btcPrice.toLocaleString() : 'N/A';
     
-    const prompt = 'You are the ARCHITECT. Create 15 viral X posts from these topics: ' + JSON.stringify(trends) + '. BTC: $' + btcStr + '. Requirements: Mix of influential people quotes (8) and fresh trends (7). Human style: conversational, personal opinions, analogies. Randomize length 200-600 chars, emojis, 3-5 hashtags. Vary post sizes naturally like humans do. Alternate groups. Return JSON: [{"post":"text"}]. Only JSON.';
+    const prompt = 'You are the ARCHITECT. Create 15 viral X posts from these topics: ' + JSON.stringify(trends) + '. BTC: $' + btcStr + '. REQUIREMENTS: 1) 70% of posts should be India-focused (Indian regulations, exchanges, influencers, celebrities, adoption) 2) Mix influential quotes (8) and fresh trends (7) 3) Human conversational style with personal opinions and analogies 4) Randomize length 200-600 chars 5) Use emojis and 3-5 hashtags 6) Include India-specific hashtags like #IndiaCrypto #BitcoinIndia #INR #WazirX #CoinDCX when relevant 7) Vary post sizes naturally. Return JSON: [{"post":"text"}]. Only JSON.';
 
     const response = await axios.post(
       'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' + geminiKey,
