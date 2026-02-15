@@ -1,119 +1,139 @@
-# Bitcoin Pulse 🤖
+# 🔶 Bitcoin Pulse Bot
 
-> Autonomous 24/7 Bitcoin content generator and poster
-
-## Overview
-
-The Bitcoin Pulse Bot monitors Bitcoin trends, generates viral content using Gemini AI, and posts to X at optimized intervals.
+Autonomous Bitcoin content generator that posts to X (Twitter) with AI-generated content and Telegram notifications.
 
 ## Features
 
-- 🤖 **Autonomous Operation** - Runs 24/7 with no manual intervention
-- 🧠 **Multi-Agent System**
-  - **Scout**: Fetches trending Bitcoin topics
-  - **Architect**: Creates posts + generates images
-  - **Scheduler**: Posts at random intervals
-- 🎨 **Gemini Image Gen** - Creates custom visuals per post
-- 📊 **Real-Time Prices** - Coinbase API integration
-- 📝 **Smart Content** - No theme repetition, price verification
+- 🤖 **AI-Powered Content**: Uses Gemini 2.5 Flash for trend research and post creation
+- 📊 **Auto-Post**: 15 posts every 5 hours (3 posts/hour)
+- 📱 **Telegram Updates**: Real-time notifications for trends, posts, and heartbeats
+- 💓 **Heartbeat Monitoring**: 5-minute health checks + hourly Telegram status
+- 🔄 **Auto-Restart**: Survives crashes and reboots via launchd
+- 🎨 **Image Prompts**: AI-generated prompts for each post
 
-## Quick Start
+## Architecture
+
+```
+SCOUT (Gemini) → Researches 10 Bitcoin trends
+    ↓
+ARCHITECT (Gemini) → Creates 15 posts (200-600 chars, varied)
+    ↓
+Image Prompts (Gemini) → Generates unique prompts
+    ↓
+Queue System → Posts every 20 minutes
+    ↓
+Telegram → Notifications for everything
+```
+
+## Setup
+
+### 1. Install Dependencies
+```bash
+npm install
+```
+
+### 2. Configure Environment
+```bash
+cp .env.example .env
+# Edit .env with your API keys
+```
+
+### 3. Get API Keys
+
+**Twitter/X API:**
+- Create app at https://developer.twitter.com
+- Get API Key, API Secret, Access Token, Access Token Secret
+
+**Telegram Bot:**
+- Message @BotFather on Telegram
+- Create new bot, get bot token
+- Get your Chat ID from @userinfobot
+
+**Google Gemini API:**
+- Get key at https://aistudio.google.com
+
+### 4. Start Bot
+```bash
+# Manual (with sleep prevention)
+caffeinate -s node index.js &
+
+# Or use auto-restart (recommended)
+./setup-auto-restart.sh
+```
+
+## Auto-Restart Setup
+
+The bot is configured to run via macOS launchd for resilience:
 
 ```bash
-# Clone/setup
-cd ~/.openclaw/workspace/gemini-ai/btc-bot
+# Check status
+launchctl list | grep bitcoinpulse
 
-# Install dependencies
-npm install
+# Stop
+launchctl bootout gui/$UID/ai.bitcoinpulse.bot
 
-# Configure API keys
-cp .env.example .env
-# Edit .env with your keys
+# Start
+launchctl bootstrap gui/$UID ~/Library/LaunchAgents/ai.bitcoinpulse.bot.plist
 
-# Start the bot
-npm start
+# View logs
+tail -f logs/btc-pulse-*.log
 ```
 
-## Configuration
+## Commands
 
-Edit `config/config.json`:
+| Command | Description |
+|---------|-------------|
+| `tail -f logs/btc-pulse-*.log` | Watch live logs |
+| `launchctl list \| grep bitcoinpulse` | Check bot status |
+| `cat logs/queue.json` | View pending posts |
 
-```json
-{
-  "api_keys": {
-    "gemini": {
-      "model_text": "gemini-3-flash",
-      "model_image": "gemini-2.5-flash-image"
-    }
-  },
-  "settings": {
-    "trends_per_hour": 10,
-    "posts_per_cycle": 4,
-    "post_interval_min": 2,
-    "post_interval_max": 5,
-    "heartbeat_minutes": 60
-  }
-}
+## Schedule
+
+| Event | Frequency |
+|-------|-----------|
+| Content Generation | Every 5 hours |
+| Posts per Cycle | 15 posts |
+| Posting Rate | 3 posts/hour (every 20 min) |
+| Heartbeat | Every 5 minutes |
+| Telegram Status | Hourly |
+
+## Files
+
+| File | Purpose |
+|------|---------|
+| `index.js` | Main bot logic |
+| `queue.json` | Pending posts queue |
+| `logs/btc-pulse-*.log` | Activity logs |
+| `ai.bitcoinpulse.bot.plist` | launchd config |
+| `setup-auto-restart.sh` | Auto-restart setup script |
+
+## Post Style
+
+- **Length**: 200-600 characters (randomized)
+- **Tone**: Conversational, human-like
+- **Content**: Mix of influential quotes + fresh trends
+- **Hashtags**: 3-5 per post
+- **Emojis**: Used naturally
+
+## Troubleshooting
+
+**Bot not posting:**
+- Check logs: `tail -f logs/btc-pulse-*.log`
+- Verify API keys in `.env`
+- Check queue: `cat queue.json`
+
+**Telegram not receiving:**
+- Verify bot token and chat ID
+- Check internet connection
+- Review launchd errors: `cat logs/launchd.err.log`
+
+**Auto-restart not working:**
+```bash
+launchctl list | grep bitcoinpulse
+# If not running, try:
+launchctl bootstrap gui/$UID ~/Library/LaunchAgents/ai.bitcoinpulse.bot.plist
 ```
-
-## File Structure
-
-```
-btc-bot/
-├── index.js          # Main bot
-├── config/
-│   └── config.json  # API keys & settings
-├── media/            # Generated images
-├── logs/            # Post history
-├── scripts/         # Utility scripts
-├── SKILLS.md        # OpenClaw prompts
-├── package.json
-└── .env.example
-```
-
-## OpenClaw Integration
-
-Use the prompts in `SKILLS.md` to configure OpenClaw:
-
-```markdown
-=== Prompt A: Setup ===
-"OpenClaw, set up Bitcoin Pulse bot..."
-
-=== Prompt B: Master Loop ===
-"OpenClaw, run the Bitcoin Pulse loop..."
-
-=== Prompt C: Quality ===
-"When generating posts, follow these guidelines..."
-```
-
-## Output
-
-Posts appear on: **@Bitbybitmoney**
-
-Sample output:
-```
-🚀 BTC breaking through $70K!
-📊 Current: $69,546 (+4.2%)
-💎 Diamond hands winning today
-#Bitcoin #BTC #Crypto
-```
-
-## Logs
-
-Check `logs/btc-pulse-YYYY-MM-DD.log` for:
-- Trending topics found
-- Posts generated
-- Images created
-- Tweet IDs
-- Errors
-
-## Requirements
-
-- Node.js 22+
-- Gemini 3 Flash API key
-- X Developer API credentials
-- Internet connection (VPS recommended)
 
 ## License
 
-MIT - Build for Bitcoin 🚀
+MIT
