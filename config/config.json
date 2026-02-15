@@ -1,0 +1,45 @@
+{
+  "project": {
+    "name": "Bitcoin Pulse",
+    "version": "1.0.0",
+    "mode": "autonomous"
+  },
+  
+  "api_keys": {
+    "gemini": {
+      "model_text": "gemini-2.5-flash",
+      "model_image": "gemini-2.5-flash",
+      "api_key": ""
+    },
+    "x": {
+      "api_key": "",
+      "api_secret": "",
+      "access_token": "",
+      "access_secret": ""
+    }
+  },
+  
+  "settings": {
+    "trends_per_hour": 10,
+    "posts_per_cycle": 10,
+    "post_interval_min": 25,
+    "post_interval_max": 35,
+    "heartbeat_minutes": 300,
+    "yolo_mode": true,
+    "retry_failed_posts": true,
+    "max_retries": 3
+  },
+  
+  "style": {
+    "tone": "sharp_professional_bullish",
+    "max_length": 500,
+    "image_style": ["photorealistic", "3d_cyberpunk"],
+    "verify_price_margin": 0.01
+  },
+  
+  "paths": {
+    "media": "./media",
+    "queue": "./queue.json",
+    "log": "./logs"
+  }
+}
