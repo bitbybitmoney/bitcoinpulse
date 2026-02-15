@@ -137,7 +137,7 @@ async function architectWork(trends) {
     const btcPrice = await getBTCPrice();
     const btcStr = btcPrice ? btcPrice.toLocaleString() : 'N/A';
     
-    const prompt = 'You are the ARCHITECT. Create 15 viral X posts from these topics: ' + JSON.stringify(trends) + '. BTC: $' + btcStr + '. REQUIREMENTS: 1) 30% of posts should be India-focused (Indian regulations, exchanges, influencers, celebrities, adoption) 2) Mix influential quotes (8) and fresh trends (7) 3) Human conversational style with personal opinions and analogies 4) Randomize length 200-600 chars 5) Use emojis and 3-5 hashtags 6) Include India-specific hashtags like #IndiaCrypto #BitcoinIndia #INR #WazirX #CoinDCX when relevant 7) Vary post sizes naturally. Return JSON: [{"post":"text"}]. Only JSON.';
+    const prompt = 'You are the ARCHITECT. Create 15 viral X posts from these topics: ' + JSON.stringify(trends) + '. BTC: $' + btcStr + '. REQUIREMENTS: 1) 30% of posts should be India-focused 2) Mix influential quotes (8) and fresh trends (7) 3) Randomize length 200-600 chars - include 3-4 SHORT posts (200-280 chars, conversational, punchy) and 3-4 LONG posts (500-600 chars, detailed analysis) 4) SHORT posts: NO hashtags, natural conversational style 5) LONG/MEDIUM posts: use emojis and 3-5 hashtags 6) Include India-specific hashtags when relevant 7) Vary post sizes naturally. Return JSON: [{"post":"text"}]. Only JSON.';
 
     const response = await axios.post(
       'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' + geminiKey,
