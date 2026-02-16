@@ -5,22 +5,23 @@ Autonomous Bitcoin content generator that posts to X (Twitter) with AI-generated
 ## Features
 
 - 🤖 **AI-Powered Content**: Uses Gemini 2.5 Flash for trend research and post creation
-- 📊 **Auto-Post**: 15 posts every 5 hours (3 posts/hour)
+- 📊 **Auto-Post**: 25 posts every 5 hours (5 posts/hour)
 - 📱 **Telegram Updates**: Real-time notifications for trends, posts, and heartbeats
 - 💓 **Heartbeat Monitoring**: 5-minute health checks + hourly Telegram status
 - 🔄 **Auto-Restart**: Survives crashes and reboots via launchd
 - 🎨 **Image Prompts**: AI-generated prompts for each post
+- 😄 **Engaging Content**: Mix of short, long, humorous, and regular posts
 
 ## Architecture
 
 ```
 SCOUT (Gemini) → Researches trends from monitored X accounts
     ↓
-ARCHITECT (Gemini) → Creates 15 posts (200-600 chars, varied)
+ARCHITECT (Gemini) → Creates 25 posts (short, long, humorous, engaging)
     ↓
 Image Prompts (Gemini) → Generates unique prompts
     ↓
-Queue System → Posts every 20 minutes
+Queue System → Posts every 12 minutes
     ↓
 Telegram → Notifications for everything
 ```
@@ -112,8 +113,8 @@ tail -f logs/btc-pulse-*.log
 | Event | Frequency |
 |-------|-----------|
 | Content Generation | Every 5 hours |
-| Posts per Cycle | 15 posts |
-| Posting Rate | 3 posts/hour (every 20 min) |
+| Posts per Cycle | **25 posts** |
+| Posting Rate | 5 posts/hour (every 12 min) |
 | Heartbeat | Every 5 minutes |
 | Telegram Status | Hourly |
 
@@ -129,15 +130,18 @@ tail -f logs/btc-pulse-*.log
 
 ## Post Style
 
-| Post Type | Length | Hashtags | Count |
-|-----------|---------|----------|-------|
-| Short | 200-280 chars | ❌ No hashtags | 3-4 posts |
-| Medium | 280-500 chars | ✅ 3-5 hashtags | 7-8 posts |
-| Long | 500-600 chars | ✅ 3-5 hashtags | 3-4 posts |
+| Post Type | Length | Hashtags | Count | Description |
+|-----------|---------|----------|-------|-------------|
+| **Short** | 200-280 chars | ❌ No | 5-6 | Conversational, punchy, direct |
+| **Long** | 500-600 chars | ✅ Yes | 5-6 | Detailed analysis, deep dives |
+| **Humorous** | 200-400 chars | ✅ Yes | 5-6 | Witty, relatable crypto humor |
+| **Regular** | 280-500 chars | ✅ Yes | 8-9 | Balanced, informative |
 
 ### Content Mix
-- **30%** India-focused posts (Indian exchanges, regulations, influencers)
-- **70%** Global crypto topics (inspired by monitored accounts)
+- **30%** India-focused posts
+- **70%** Global crypto topics (from monitored accounts)
+- **Humor**: Crypto jokes, relatable moments, witty observations
+- **Engagement**: Questions, conversation starters, community interaction
 - **Original content** - never copied from monitored accounts
 
 ## Troubleshooting
