@@ -14,7 +14,7 @@ Autonomous Bitcoin content generator that posts to X (Twitter) with AI-generated
 ## Architecture
 
 ```
-SCOUT (Gemini) → Researches 10 Bitcoin trends
+SCOUT (Gemini) → Researches trends from monitored X accounts
     ↓
 ARCHITECT (Gemini) → Creates 15 posts (200-600 chars, varied)
     ↓
@@ -24,6 +24,26 @@ Queue System → Posts every 20 minutes
     ↓
 Telegram → Notifications for everything
 ```
+
+## Content Sources
+
+### Monitored X Accounts
+The bot researches these accounts for trending topics and content ideas:
+
+| Account | Focus Area |
+|---------|-------------|
+| @CryptoRover | Bitcoin analysis & news |
+| @MrCryptoWhale | Whale movements |
+| @WatcherGuru | Market trends |
+| @whale_guru | Whale activity |
+| @whale_insider | Insider signals |
+| @trendingbitcoin | Trending topics |
+
+### How Content is Generated
+1. **SCOUT** researches what these accounts are posting about today
+2. **ARCHITECT** creates ORIGINAL takes inspired by their themes
+3. **Posts** reflect your unique perspective (not copies!)
+4. **Mix of sources**: 30% India-focused, 70% global crypto topics
 
 ## Setup
 
@@ -109,11 +129,16 @@ tail -f logs/btc-pulse-*.log
 
 ## Post Style
 
-- **Length**: 200-600 characters (randomized)
-- **Tone**: Conversational, human-like
-- **Content**: Mix of influential quotes + fresh trends
-- **Hashtags**: 3-5 per post
-- **Emojis**: Used naturally
+| Post Type | Length | Hashtags | Count |
+|-----------|---------|----------|-------|
+| Short | 200-280 chars | ❌ No hashtags | 3-4 posts |
+| Medium | 280-500 chars | ✅ 3-5 hashtags | 7-8 posts |
+| Long | 500-600 chars | ✅ 3-5 hashtags | 3-4 posts |
+
+### Content Mix
+- **30%** India-focused posts (Indian exchanges, regulations, influencers)
+- **70%** Global crypto topics (inspired by monitored accounts)
+- **Original content** - never copied from monitored accounts
 
 ## Troubleshooting
 
